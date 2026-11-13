@@ -1,5 +1,5 @@
-from Business.lab_problem_services import add_lab_problem, remove_lab_problem
-from Business.student_services import add_student, remove_student
+from Business.lab_problem_services import add_lab_problem, remove_lab_problem, modify_lab_problem
+from Business.student_services import add_student, remove_student, modify_student
 from datetime import datetime
 
 def ui_print_all_students(repo):
@@ -72,6 +72,42 @@ def ui_remove_lab_problem(lab_repo):
         remove_lab_problem(lab_repo, p_to_remove)
     except ValueError as e:
         print(f"Eroare: \n{e}")
+
+def ui_modify_student_by_id(repo):
+    """
+    Functie care initializeaza modificarea unui student din lista de studenti
+    :param repo: lista de studenti
+    :return: None
+    """
+    try:
+        s_to_modify = int(input("Dati ID-ul studentului pe care vreti sa-l modificati: ").strip())
+        try:
+            name_student = (input("Dati numele studentului: ")).strip()
+            group_student = int((input("Dati grupa studentului: ")).strip())
+            modify_student(repo, s_to_modify, name_student, group_student)
+        except ValueError as e:
+            print(f"Eroare: \n{e}")
+    except ValueError as e:
+        print(f"Eroare: \n{e}")
+
+def ui_modify_lab_problem(lab_repo):
+    """
+    Fucntie care initializeaza modificarea unei probleme din lista de probleme de laborator lab_repo
+    :param lab_repo: lista de probleme de laborator
+    :return: None
+    """
+    try:
+        p_to_modify = input("Dati numarul laboratorului si problemei pe care vreti sa o modificati (labX-pY): ").lower().strip()
+        try:
+            lab_num_lab_problem = input("Dati numarul laboratorului si al problemei (labX-pY): ").lower().strip()
+            description = input("Dati descierea problemei: ").strip()
+            deadline = input("Dati deadline-ul (zz/ll/aaaa): ").strip()
+            deadline_date = datetime.strptime(deadline, "%d/%m/%Y").date()
+            modify_lab_problem(lab_repo, p_to_modify, lab_num_lab_problem, description, deadline_date)
+        except ValueError as e:
+            print(f"Eroare: \n{e}")
+    except ValueError as e:
+        print(f"Eroare: \n{e}")
 def ui_menu():
     """
     Functie care afiseaza meniul aplicatiei
@@ -86,7 +122,7 @@ def ui_menu():
           "6: Adauga o problema de laborator \n"
           "7: Sterge o problema de laborator \n"
           "8: Modifica o problema de laborator \n"
-          "exit: Opreste programul"
+          "exit: Opreste programul \n"
           "-----------------------------------------------------")
 
 def ui_run_console(command, repo, lab_repo):
@@ -101,11 +137,13 @@ def ui_run_console(command, repo, lab_repo):
         "1": ui_print_all_students,
         "3": ui_add_student,
         "4": ui_remove_student,
+        "5": ui_modify_student_by_id,
                 }
     problem_commands = {
         "2": ui_print_all_lab_problems,
         "6": ui_add_lab_problem,
         "7": ui_remove_lab_problem,
+        "8": ui_modify_lab_problem,
     }
     if command in student_commands:
         student_commands[command](repo)

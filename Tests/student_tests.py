@@ -137,9 +137,8 @@ def run_all_student_tests():
     test_students_repo()
     test_students_repo_add_student()
     test_students_repo_remove_student()
-    test_students_repo_add_student()
-    test_students_repo_remove_student()
-    test_students_repo_add_student()
+    test_add_student()
+    test_remove_student()
     test_validate_student()
     test_validate_id()
 

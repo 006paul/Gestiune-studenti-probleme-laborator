@@ -24,3 +24,17 @@ def remove_student(repo, student_id):
     """
     validate_id(repo, student_id)
     repo.repo_remove_student(student_id)
+
+def modify_student(repo, student_id, name, group):
+    """
+    Functie care apeleaza metoda repo_modify_students
+    :param repo: lista de studenti
+    :param student_id: ID-ul unui student
+    :param name: numele unui student
+    :param group: grupa unui student
+    :return: None
+    """
+    validate_id(repo, student_id)
+    student = Student(student_id, name, group)
+    validate_student(student)
+    repo.repo_modify_students(student)

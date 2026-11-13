@@ -1,3 +1,6 @@
+from Domain.student import Student
+
+
 class StudentsRepository:
     def __init__(self, students_list):
         """
@@ -35,5 +38,16 @@ class StudentsRepository:
         :return: __students_list - lista de studenti
         """
         return self.__students_list
+
+    def repo_modify_students(self, student : Student):
+        """
+        Setter pentru lista de studenti
+        :param student: student
+        :return: None
+        """
+        for s in self.__students_list:
+            if s.id_student == student.id_student:
+                s.name = student.name
+                s.group = student.group
 
 

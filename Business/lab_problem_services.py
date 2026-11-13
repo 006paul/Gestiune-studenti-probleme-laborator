@@ -16,12 +16,27 @@ def add_lab_problem(lab_repo, lab_num_lab_problem, description, deadline):
     validate_lab_problem(lab_problem)
     lab_repo.repo_add_lab_problem(lab_problem)
 
-def remove_lab_problem(lab_repo, lab_problem_num):
+def remove_lab_problem(lab_repo, lab_problem_num : str):
     """
     Functie care apeleza metoda repo_remove_lab_problem
     :param lab_repo: lista de probleme de laborator
-    :param lab_num_lab_problem: numarul problemei care va fi stearsa
+    :param lab_problem_num: numarul problemei care va fi stearsa
     :return: None
     """
     validate_lab_problem_num_is_in_repo(lab_repo, lab_problem_num)
     lab_repo.repo_remove_lab_problem(lab_problem_num)
+
+def modify_lab_problem(lab_repo, p_to_modify : str, lab_num_lab_problem : str, description : str, deadline):
+    """
+    Functie care apeleza metoda repo_modify_lab_problem
+    :param lab_repo: lista de probleme de laborator
+    :param p_to_modify: numarul problemei care va fi modificata
+    :param lab_num_lab_problem: numarul laboratorului si al problemei
+    :param description: descrierea problemei
+    :param deadline: deadline-ul problemei
+    :return: None
+    """
+    validate_lab_problem_num_is_in_repo(lab_repo, p_to_modify)
+    lab_problem = LabProblem(lab_num_lab_problem, description, deadline)
+    validate_lab_problem(lab_problem)
+    lab_repo.repo_modify_lab_problem(p_to_modify, lab_problem)

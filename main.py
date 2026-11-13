@@ -1,5 +1,6 @@
 from Repository.lab_problem_list import LabProblemRepository
 from Repository.students_list import StudentsRepository
+from Tests.lab_problem_tests import run_all_lab_problem_tests
 from Tests.student_tests import run_all_student_tests
 from UI.ui import ui_run_console, ui_get_command, ui_menu
 
@@ -10,6 +11,7 @@ def main():
     :return: None
     """
     run_all_student_tests()
+    run_all_lab_problem_tests()
     repo = StudentsRepository([])
     lab_repo = LabProblemRepository([])
     while True:
