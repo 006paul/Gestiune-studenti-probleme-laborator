@@ -65,4 +65,4 @@ class Student:
         Functie folosita la afisarea datelor unui student
         :return:
         """
-        return f"ID: {self.id_student}, Nume: {self.name}, Grupa: {self.group}"
+        return f"ID: {self.id_student} | Nume: {self.name} | Grupa: {self.group}"

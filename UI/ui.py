@@ -82,8 +82,10 @@ def ui_menu():
           "2: Afiseaza toate problemele de laborator \n"
           "3: Adauga un student \n"
           "4: Sterge un student \n"
-          "5: Adauga o problema de laborator \n"
-          "6: Sterge o problema de laborator \n"
+          "5: Modifica un student (dupa ID): \n"
+          "6: Adauga o problema de laborator \n"
+          "7: Sterge o problema de laborator \n"
+          "8: Modifica o problema de laborator \n"
           "exit: Opreste programul"
           "-----------------------------------------------------")
 
@@ -102,8 +104,8 @@ def ui_run_console(command, repo, lab_repo):
                 }
     problem_commands = {
         "2": ui_print_all_lab_problems,
-        "5": ui_add_lab_problem,
-        "6": ui_remove_lab_problem,
+        "6": ui_add_lab_problem,
+        "7": ui_remove_lab_problem,
     }
     if command in student_commands:
         student_commands[command](repo)

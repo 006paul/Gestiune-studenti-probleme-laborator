@@ -68,4 +68,4 @@ class LabProblem:
         Functie pentru afisearea datelor unei probleme de laborator
         :return:
         """
-        return f"Numar: {self.__lab_num_problem_num}, Descriere: {self.__description}, Deadline: {self.__deadline.strftime('%d/%m/%Y')}"
+        return f"Numar: {self.__lab_num_problem_num} | Descriere: {self.__description} | Deadline: {self.__deadline.strftime('%d/%m/%Y')}"
