@@ -20,6 +20,7 @@ class LabProblemRepository:
             if p.lab_num_problem_num == lab_problem_num:
                 self.__lab_problem_list.remove(p)
                 return
+        raise ValueError("Problema nu exista")
 
     @property
     def lab_problems(self):
@@ -41,4 +42,15 @@ class LabProblemRepository:
                 p.description = lab_problem.description
                 p.deadline = lab_problem.deadline
                 return
+        raise ValueError("Problema nu exista")
+
+    def repo_search_lab_problem(self, lab_num_problem_num):
+        """
+        Functie care cauta o problema de laborator
+        :param lab_num_problem_num: numarul problemei cautate
+        :return: lab_problem
+        """
+        for p in self.__lab_problem_list:
+            if p.lab_num_problem_num == lab_num_problem_num:
+                return p
         raise ValueError("Problema nu exista")

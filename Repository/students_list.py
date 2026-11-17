@@ -30,6 +30,7 @@ class StudentsRepository:
             if s.id_student == student_id:
                 self.__students_list.remove(s)
                 return
+        raise ValueError("Studentul nu exista")
 
     @property
     def students(self):
@@ -49,5 +50,18 @@ class StudentsRepository:
             if s.id_student == student.id_student:
                 s.name = student.name
                 s.group = student.group
+                return
+        raise ValueError("Studentul nu exista")
+
+    def repo_search_students(self, student_id):
+        """
+        Functie care cauda un student
+        :param student_id: id-ul studentului cautat
+        :return: None
+        """
+        for s in self.__students_list:
+            if s.id_student == student_id:
+                return s
+        raise ValueError("Studentul nu exista")
 
 
