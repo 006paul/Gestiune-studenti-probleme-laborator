@@ -1,6 +1,10 @@
+from Business.grade_service import GradesService
 from Business.lab_problem_services import LabProblemService
 from Business.student_services import StudentsService
 from datetime import datetime
+
+from Repository.students_list import StudentsRepository
+
 
 class UI:
     def ui_print_all_students(self, repo):
@@ -20,6 +24,17 @@ class UI:
         """
         for problem in lab_repo.lab_problems:
             print(problem)
+
+    def ui_print_grades_list(self, repo, lab_repo, grade_repo):
+        """
+        Functie care afiseaza toate problemele de laborator asignate
+        :param repo: lista de studenti
+        :param lab_repo: lista de probleme de laborator
+        :param grade_repo: lista de note
+        :return: None
+        """
+        for grade in grade_repo.grades:
+            print(grade)
 
     def ui_add_student(self, repo):
         """
@@ -136,6 +151,37 @@ class UI:
         except ValueError as e:
             print(f"Eroare: \n{e}")
 
+    def ui_assign_problem(self, repo, lab_repo, grades_repo):
+        """
+        Functie care initializeaza asignarea unei probleme unui student
+        :param repo: lista de studenti
+        :param lab_repo: lista de probleme de laborator
+        :param grades_repo: lista de note
+        :return: None
+        """
+        try:
+            student_id = int(input("Dati ID-ul studentului caruia doriti sa-i asignati o problema: ").strip())
+            lab_p = input("Dati numarul problemei pe care doriti sa i-o asignati studentului (labX-pY): ").lower().strip()
+            GradesService().assign_problem(repo, lab_repo, grades_repo, student_id, lab_p)
+        except ValueError as e:
+            print(f"Eroare: \n{e}")
+
+    def ui_grade_assigned_problem(self, repo, lab_repo, grades_repo):
+        """
+        Functie care initializeaza asignarea unei probleme unui student
+        :param repo: lista de studenti
+        :param lab_repo: lista de probleme de laborator
+        :param grades_repo: lista de note
+        :return: None
+        """
+        try:
+            student_id = int(input("Dati ID-ul studentului pe care doriti sa-l notati: ").strip())
+            lab_p = input("Dati numarul problemei (labX-pY): ").lower().strip()
+            problem_grade = float(input("Dati nota: ").strip())
+            GradesService().grade_assigned_problem(repo, lab_repo, grades_repo, student_id, lab_p, problem_grade)
+        except ValueError as e:
+            print(f"Eroare: \n{e}")
+
     def ui_menu(self):
         """
         Functie care afiseaza meniul aplicatiei
@@ -152,10 +198,13 @@ class UI:
               "8: Sterge o problema de laborator \n"
               "9: Modifica o problema de laborator \n"
               "10: Cauta o problema de laborator \n"
+              "11: Afiseaza toti studentii cu probleme asignate \n"
+              "12: Asigneaza o problema de laborator unui student \n"
+              "13: Noteza un student \n"
               "exit: Opreste programul \n"
               "-----------------------------------------------------")
 
-    def ui_run_console(self, command, repo, lab_repo):
+    def ui_run_console(self, command, repo, lab_repo, grades_repo):
         """
         Functie care ruleaza comenzile de la utilizator
         :param command: str - comanda data de utilizator
@@ -177,10 +226,17 @@ class UI:
             "9": self.ui_modify_lab_problem,
             "10": self.ui_search_lab_problem,
         }
+        assignment_commands = {
+            "11" : self.ui_print_grades_list,
+            "12" : self.ui_assign_problem,
+            "13" : self.ui_grade_assigned_problem,
+        }
         if command in student_commands:
             student_commands[command](repo)
         elif command in problem_commands:
             problem_commands[command](lab_repo)
+        elif command in assignment_commands:
+            assignment_commands[command](repo, lab_repo, grades_repo)
         else:
             print("Comanda invalida")
 
