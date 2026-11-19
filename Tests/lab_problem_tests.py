@@ -1,6 +1,9 @@
 from Business.lab_problem_services import LabProblemService
+from Domain.grade import Grade
 from Domain.lab_problem import LabProblem
 from datetime import date
+
+from Repository.grades_list import GradeRepository
 from Repository.lab_problem_list import LabProblemRepository
 from Validations.lab_problem_validations import LabProblemValidations
 
@@ -83,7 +86,11 @@ class LabProblemTests:
         test_lab_repo_list = LabProblemRepository([LabProblem("lab1-p2", "A doua problema", date(2027, 11, 17)),
                                                    LabProblem("lab2-p1", "Prima problema", date(2027, 12, 17)),
                                                    LabProblem("lab2-p3", "A treia problema", date(2028, 11, 17))])
-        LabProblemService().remove_lab_problem(test_lab_repo_list, "lab2-p3")
+        test_grades_repo = test_grades_repo = GradeRepository([
+            Grade(1, "lab1-p1", 9.5),
+            Grade(2, "lab1-p1", 8.0)
+        ])
+        LabProblemService().remove_lab_problem(test_lab_repo_list, test_grades_repo, "lab2-p3")
         assert len(test_lab_repo_list.lab_problems) == 2
 
     def test_validate_lab_problem_num(self):
@@ -117,7 +124,10 @@ class LabProblemTests:
         test_lab_repo_list = LabProblemRepository([LabProblem("lab1-p2", "A doua problema", date(2027, 11, 17)),
                                                    LabProblem("lab2-p1", "Prima problema", date(2027, 12, 17)),
                                                    LabProblem("lab2-p3", "A treia problema", date(2028, 11, 17))])
-        LabProblemService().modify_lab_problem(test_lab_repo_list, "lab2-p3", "lab3-p2", "problema 2", date(2028, 11, 17))
+        test_grades_repo = GradeRepository([
+            Grade(1, "lab1-p1", 9.5),
+            Grade(2, "lab1-p1", 8.0)])
+        LabProblemService().modify_lab_problem(test_lab_repo_list, test_grades_repo, "lab2-p3", "lab3-p2", "problema 2", date(2028, 11, 17))
         assert test_lab_repo_list.lab_problems[2].description == "problema 2"
 
     def test_repo_modify_lab_problem(self):
@@ -131,6 +141,28 @@ class LabProblemTests:
         lab_problem = LabProblem("lab2-p2", "A doua problema lab2", date(2027, 11, 17))
         test_lab_repo_list.repo_modify_lab_problem("lab1-p2", lab_problem)
         assert test_lab_repo_list.lab_problems[0].description == "A doua problema lab2"
+
+    def test_repo_search_lab_problem(self):
+        """
+        Functie care testeaza repo_search_lab_problem
+        :return: None
+        """
+        test_lab_repo_list = LabProblemRepository([LabProblem("lab1-p2", "A doua problema", date(2027, 11, 17)),
+                                                   LabProblem("lab2-p1", "Prima problema", date(2027, 12, 17)),
+                                                   LabProblem("lab2-p3", "A treia problema", date(2028, 11, 17))])
+        searched_lab_problem = test_lab_repo_list.repo_search_lab_problem("lab1-p2")
+        assert test_lab_repo_list.lab_problems[0] == searched_lab_problem
+
+    def test_search_lab_problem(self):
+        """
+        Functie care testeaza search_lab_problem
+        :return: None
+        """
+        test_lab_repo_list = LabProblemRepository([LabProblem("lab1-p2", "A doua problema", date(2027, 11, 17)),
+                                                   LabProblem("lab2-p1", "Prima problema", date(2027, 12, 17)),
+                                                   LabProblem("lab2-p3", "A treia problema", date(2028, 11, 17))])
+        searched_lab_problem = LabProblemService().search_lab_problem(test_lab_repo_list, "lab1-p2")
+        assert test_lab_repo_list.lab_problems[0] == searched_lab_problem
 
     def run_all_lab_problem_tests(self):
         """
@@ -148,3 +180,5 @@ class LabProblemTests:
         self.test_validate_lab_problem()
         self.test_modify_lab_problem()
         self.test_repo_modify_lab_problem()
+        self.test_repo_search_lab_problem()
+        self.test_search_lab_problem()

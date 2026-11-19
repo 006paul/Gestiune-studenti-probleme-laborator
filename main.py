@@ -1,6 +1,7 @@
 from Repository.grades_list import GradeRepository
 from Repository.lab_problem_list import LabProblemRepository
 from Repository.students_list import StudentsRepository
+from Tests.grades_tests import GradesTests
 from Tests.lab_problem_tests import LabProblemTests
 from Tests.student_tests import StudentsTests
 from UI.ui import UI
@@ -13,6 +14,7 @@ def main():
     """
     StudentsTests().run_all_student_tests()
     LabProblemTests().run_all_lab_problem_tests()
+    GradesTests().run_all_grade_tests()
     repo = StudentsRepository([])
     lab_repo = LabProblemRepository([])
     grades_repo = GradeRepository([])

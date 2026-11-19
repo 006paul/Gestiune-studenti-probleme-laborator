@@ -15,7 +15,7 @@ class LabProblemService:
         LabProblemValidations().validate_lab_problem(lab_problem)
         lab_repo.repo_add_lab_problem(lab_problem)
 
-    def remove_lab_problem(self, lab_repo, lab_problem_num : str):
+    def remove_lab_problem(self, lab_repo, grades_repo, lab_problem_num : str):
         """
         Functie care apeleza metoda repo_remove_lab_problem
         :param lab_repo: lista de probleme de laborator
@@ -23,8 +23,11 @@ class LabProblemService:
         :return: None
         """
         lab_repo.repo_remove_lab_problem(lab_problem_num)
+        grades_repo.repo_remove_lab_problem_grades(lab_problem_num)
 
-    def modify_lab_problem(self, lab_repo, p_to_modify : str, lab_num_lab_problem : str, description : str, deadline):
+
+    def modify_lab_problem(self, lab_repo, grades_repo,
+                           p_to_modify : str, lab_num_lab_problem : str, description : str, deadline):
         """
         Functie care apeleza metoda repo_modify_lab_problem
         :param lab_repo: lista de probleme de laborator
@@ -37,6 +40,7 @@ class LabProblemService:
         lab_problem = LabProblem(lab_num_lab_problem, description, deadline)
         LabProblemValidations().validate_lab_problem(lab_problem)
         lab_repo.repo_modify_lab_problem(p_to_modify, lab_problem)
+        grades_repo.repo_rename_problem_grades(p_to_modify, lab_num_lab_problem)
 
     def search_lab_problem(self, lab_repo, lab_num_problem_num):
         """

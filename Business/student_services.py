@@ -1,4 +1,5 @@
 from Domain.student import Student
+from Repository.students_list import StudentsRepository
 from Validations.student_validations import StudentValidations
 
 class StudentsService:
@@ -15,7 +16,7 @@ class StudentsService:
         StudentValidations().validate_student(student)
         repo.repo_add_student(student)
 
-    def remove_student(self, repo, student_id):
+    def remove_student(self, repo, grades_repo, student_id):
         """
         Functie care apeleaza functia repo_remove_student pentru a sterge studentul cu ID-ul id din repo
         :param repo: lista de studenti
@@ -23,6 +24,7 @@ class StudentsService:
         :return: None
         """
         repo.repo_remove_student(student_id)
+        grades_repo.repo_remove_student_grades(student_id)
 
     def modify_student(self, repo, student_id, name, group):
         """
@@ -37,7 +39,7 @@ class StudentsService:
         StudentValidations().validate_student(student)
         repo.repo_modify_students(student)
 
-    def search_students(self, repo, student_id : int):
+    def search_students(self, repo : StudentsRepository, student_id : int):
         """
         Functie care apeleaza metoda repo_search_students
         :param repo: lista de studenti

@@ -1,5 +1,7 @@
 from Business.student_services import StudentsService
+from Domain.grade import Grade
 from Domain.student import Student
+from Repository.grades_list import GradeRepository
 from Repository.students_list import StudentsRepository
 from Validations.student_validations import StudentValidations
 
@@ -98,7 +100,10 @@ class StudentsTests:
         test_repo = StudentsRepository([Student(1, "Paul Andrei", 216),
                                         Student(2, "Marius", 214),
                                         Student(3, "David", 214)])
-        StudentsService().remove_student(test_repo, 2)
+        test_grades_repo = GradeRepository([
+            Grade(1, "lab1-p1", 9.5),
+            Grade(2, "lab1-p1", 8.0)])
+        StudentsService().remove_student(test_repo, test_grades_repo, 2)
         assert len(test_repo.students) == 2
 
     def test_validate_student(self):
@@ -136,6 +141,24 @@ class StudentsTests:
         test_repo.repo_modify_students(student)
         assert test_repo.students[2].group == 221
 
+    def test_repo_search_students(self):
+        """
+        Functie care testeaza repo_search_students
+        :return: None
+        """
+        test_repo = StudentsRepository([Student(1, "Paul Andrei", 216),])
+        searched_student = test_repo.repo_search_students(1)
+        assert test_repo.students[0] == searched_student
+
+    def test_search_students(selfs):
+        """
+        Functie care testeaza search_students
+        :return: None
+        """
+        test_repo = StudentsRepository([Student(1, "Paul Andrei", 216), ])
+        searched_student = StudentsService().search_students(test_repo, 1)
+        assert test_repo.students[0] == searched_student
+
     def run_all_student_tests(self):
         """
         Functie care ruleza toate testele
@@ -152,3 +175,5 @@ class StudentsTests:
         self.test_validate_student()
         self.test_modify_student()
         self.test_repo_modify_student()
+        self.test_repo_search_students()
+        self.test_search_students()

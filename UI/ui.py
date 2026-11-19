@@ -2,7 +2,6 @@ from Business.grade_service import GradesService
 from Business.lab_problem_services import LabProblemService
 from Business.student_services import StudentsService
 from datetime import datetime
-
 from Repository.students_list import StudentsRepository
 
 
@@ -65,7 +64,7 @@ class UI:
         except ValueError as e:
             print(f"Eroare: \n{e}")
 
-    def ui_remove_student(self, repo):
+    def ui_remove_student(self, repo, grade_repo):
         """
         Functie care initiaza stergerea unui student din lista de studenti
         :param repo: lista de studenti
@@ -73,11 +72,11 @@ class UI:
         """
         try:
             id_to_remove = int((input("Dati ID-ul studentului pe care doriti sa-l stergeti: ")).strip())
-            StudentsService().remove_student(repo, id_to_remove)
+            StudentsService().remove_student(repo, grade_repo, id_to_remove)
         except ValueError as e:
             print(f"Eroare: \n{e}")
 
-    def ui_remove_lab_problem(self, lab_repo):
+    def ui_remove_lab_problem(self, lab_repo, grades_repo):
         """
         Funcite care initiaza stergerea unei probleme din lista de probleme de laborator lab_repo
         :param lab_repo: lista de probleme de laborator
@@ -85,7 +84,7 @@ class UI:
         """
         try:
             p_to_remove = input("Dati numarul laboratorului si numarul problemei pe care doriti sa-l stergeti (labX-pY): ").lower().strip()
-            LabProblemService().remove_lab_problem(lab_repo, p_to_remove)
+            LabProblemService().remove_lab_problem(lab_repo, grades_repo, p_to_remove)
         except ValueError as e:
             print(f"Eroare: \n{e}")
 
@@ -106,7 +105,7 @@ class UI:
         except ValueError as e:
             print(f"Eroare: \n{e}")
 
-    def ui_modify_lab_problem(self, lab_repo):
+    def ui_modify_lab_problem(self, lab_repo, grades_repo):
         """
         Fucntie care initializeaza modificarea unei probleme din lista de probleme de laborator lab_repo
         :param lab_repo: lista de probleme de laborator
@@ -119,7 +118,7 @@ class UI:
                 description = input("Dati descierea problemei: ").strip()
                 deadline = input("Dati deadline-ul (zz/ll/aaaa): ").strip()
                 deadline_date = datetime.strptime(deadline, "%d/%m/%Y").date()
-                LabProblemService().modify_lab_problem(lab_repo, p_to_modify, lab_num_lab_problem, description, deadline_date)
+                LabProblemService().modify_lab_problem(lab_repo, grades_repo, p_to_modify, lab_num_lab_problem, description, deadline_date)
             except ValueError as e:
                 print(f"Eroare: \n{e}")
         except ValueError as e:
@@ -213,30 +212,30 @@ class UI:
         :return: none
         """
         student_commands = {
-            "1": self.ui_print_all_students,
-            "3": self.ui_add_student,
-            "4": self.ui_remove_student,
-            "5": self.ui_modify_student_by_id,
-            "6": self.ui_search_students,
+            "1": lambda: self.ui_print_all_students(repo),
+            "3": lambda: self.ui_add_student(repo),
+            "4": lambda: self.ui_remove_student(repo, grades_repo),
+            "5": lambda: self.ui_modify_student_by_id(repo),
+            "6": lambda: self.ui_search_students(repo),
                     }
         problem_commands = {
-            "2": self.ui_print_all_lab_problems,
-            "7": self.ui_add_lab_problem,
-            "8": self.ui_remove_lab_problem,
-            "9": self.ui_modify_lab_problem,
-            "10": self.ui_search_lab_problem,
+            "2": lambda: self.ui_print_all_lab_problems(lab_repo),
+            "7": lambda: self.ui_add_lab_problem(lab_repo),
+            "8": lambda: self.ui_remove_lab_problem(lab_repo, grades_repo),
+            "9": lambda: self.ui_modify_lab_problem(lab_repo, grades_repo),
+            "10": lambda: self.ui_search_lab_problem(lab_repo),
         }
         assignment_commands = {
-            "11" : self.ui_print_grades_list,
-            "12" : self.ui_assign_problem,
-            "13" : self.ui_grade_assigned_problem,
+            "11" : lambda:  self.ui_print_grades_list(repo, lab_repo, grades_repo),
+            "12" : lambda: self.ui_assign_problem(repo, lab_repo, grades_repo),
+            "13" : lambda: self.ui_grade_assigned_problem(repo, lab_repo, grades_repo),
         }
         if command in student_commands:
-            student_commands[command](repo)
+            student_commands[command]()
         elif command in problem_commands:
-            problem_commands[command](lab_repo)
+            problem_commands[command]()
         elif command in assignment_commands:
-            assignment_commands[command](repo, lab_repo, grades_repo)
+            assignment_commands[command]()
         else:
             print("Comanda invalida")
 

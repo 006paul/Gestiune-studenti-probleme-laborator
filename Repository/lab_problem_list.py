@@ -10,12 +10,22 @@ class LabProblemRepository:
         self.__lab_problem_list = lab_problem_list
 
     def repo_add_lab_problem(self, lab_problem : LabProblem):
+        """
+        Functie care adauga o problema de laborator
+        :param lab_problem: problema de laborator
+        :return: None
+        """
         for p in self.__lab_problem_list:
             if p.lab_num_problem_num == lab_problem.lab_num_problem_num:
                 raise ValueError("Problema exista deja")
         self.__lab_problem_list.append(lab_problem)
 
     def repo_remove_lab_problem(self, lab_problem_num):
+        """
+        Functie care sterge o problema de laborator
+        :param lab_problem_num: numarul problemei sterse
+        :return: None
+        """
         for p in self.__lab_problem_list:
             if p.lab_num_problem_num == lab_problem_num:
                 self.__lab_problem_list.remove(p)
@@ -31,6 +41,12 @@ class LabProblemRepository:
         return self.__lab_problem_list
 
     def repo_modify_lab_problem(self, p_to_modify: str, lab_problem: LabProblem):
+        """
+        Functie care modifica o problema de laborator
+        :param p_to_modify: problema care se modifica
+        :param lab_problem: noua problema de laborator
+        :return: None
+        """
         if p_to_modify != lab_problem.lab_num_problem_num:
             for p in self.__lab_problem_list:
                 if p.lab_num_problem_num == lab_problem.lab_num_problem_num:
