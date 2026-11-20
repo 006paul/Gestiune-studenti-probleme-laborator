@@ -18,7 +18,6 @@ def main():
     LabProblemTests().run_all_lab_problem_tests()
     GradesTests().run_all_grade_tests()
     StatisticsTests().run_all_statistics_tests()
-    StatisticsTests().run_all_statistics_tests()
     repo = StudentsRepository([])
     lab_repo = LabProblemRepository([])
     grades_repo = GradeRepository([])
