@@ -63,5 +63,3 @@ class StudentsRepository:
             if s.id_student == student_id:
                 return s
         raise ValueError("Studentul nu exista")
-
-

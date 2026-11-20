@@ -68,6 +68,15 @@ class GradeRepository:
             if g.lab_problem_num == old_num:
                 g.lab_problem_num = new_num
 
+    def repo_search_grade(self, id):
+        """
+        Functie care cauto o nota dupa id
+        :return: nota
+        """
+        for g in self.__grades_list:
+            if g.student_id == id:
+                return g
+        return None
     @property
     def grades(self):
         """

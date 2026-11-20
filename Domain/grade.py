@@ -62,4 +62,3 @@ class Grade:
         """
         nota_str = f"{self.__grade}" if self.__grade is not None else "Nenotat"
         return f"ID: {self.__student_id} | Problema: {self.__lab_problem_num} | Nota: {nota_str}"
-

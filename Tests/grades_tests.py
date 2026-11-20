@@ -151,6 +151,16 @@ class GradesTests:
         GradesService().grade_assigned_problem(test_repo, test_lab_repo, test_grade_repo, 1, "lab1-p1", 10)
         assert test_grade_repo.grades[0].grade == 10
 
+    def test_repo_search_grade(self):
+        """
+        Functie care testeaza repo_search_grade
+        :return: None
+        """
+        test_repo = StudentsRepository([Student(1, "paul", 216)])
+        test_grade_repo = GradeRepository([Grade(1, "lab1-p1", 7),])
+        grade = test_grade_repo.repo_search_grade(test_repo.students[0].id_student)
+        assert grade == test_grade_repo.grades[0]
+
     def run_all_grade_tests(self):
         """
         Functie care ruleaza toate testele
@@ -167,3 +177,4 @@ class GradesTests:
         self.test_repo_rename_problem_grades()
         self.test_assign_lab_problem()
         self.test_grade_assigned_problem()
+        self.test_repo_search_grade()

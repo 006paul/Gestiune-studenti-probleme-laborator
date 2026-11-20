@@ -66,3 +66,10 @@ class Student:
         :return:
         """
         return f"ID: {self.id_student} | Nume: {self.name} | Grupa: {self.group}"
+
+    def __repr__(self):
+        """
+        Functie folosita la afisarea datelor unui student in lista
+        :return:
+        """
+        pass

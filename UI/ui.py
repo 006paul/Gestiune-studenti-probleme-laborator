@@ -1,7 +1,11 @@
 from Business.grade_service import GradesService
 from Business.lab_problem_services import LabProblemService
+from Business.statistics_service import StatisticsService
 from Business.student_services import StudentsService
 from datetime import datetime
+
+from Domain.grade import Grade
+from Repository.grades_list import GradeRepository
 from Repository.students_list import StudentsRepository
 
 
@@ -181,6 +185,60 @@ class UI:
         except ValueError as e:
             print(f"Eroare: \n{e}")
 
+    def ui_sort_students_and_grades_by_name(self, repo, grades_repo):
+        """
+        Functie care afiseaza studentii sortati in ordine alfabetica
+        :param repo: lista de studenti
+        :param grades_repo: lista de note
+        :return: None
+        """
+        try:
+            problem = input("Dati numarul problemei (labX-pY): ").strip().lower()
+            if not any(g.lab_problem_num == problem for g in grades_repo.grades):
+                print("Problema nu exista sau nu este asignata")
+                return
+            sorted_repo = StatisticsService().sort_students_and_grades_by_name(repo)
+            for student in sorted_repo:
+                grade = grades_repo.repo_search_grade(student.id_student)
+                if grade is not None and grade.lab_problem_num == problem:
+                    grade_str = f"{grade.grade}" if grade.grade is not None else "Nenotat"
+                    print(f"ID: {student.id_student} | Nume: {student.name} | Nota: {grade_str}")
+        except ValueError as e:
+            print(f"Eroare: \n{e}")
+
+    def ui_sort_students_by_grade(self, repo, grades_repo):
+        """
+        Functie care afiseaza studentii sortati in ordinea descrescatoare a notelor
+        :param repo: lista de studenti
+        :param grades_repo: lista de note
+        :return: None
+        """
+        try:
+            problem = input("Dati numarul problemei (labX-pY): ").strip().lower()
+            if not any(g.lab_problem_num == problem for g in grades_repo.grades):
+                print("Problema nu exista sau nu este asignata")
+                return
+            sorted_repo = StatisticsService().sort_students_by_grade(repo, grades_repo, problem)
+            for student, grade in sorted_repo:
+                grade_str = f"{grade.grade}" if grade.grade is not None else "Nenotat"
+                print(f"ID: {student.id_student} | Nume: {student.name} | Nota: {grade_str}")
+        except ValueError as e:
+            print(f"Eroare: \n{e}")
+
+    def ui_sort_students_by_average(self, repo, grades_repo):
+        """
+        Functie care afiseaza studentii cu media mai mica ca 5
+        :param repo: lista de studenti
+        :param grades_repo: lista de note
+        :return: None
+        """
+        try:
+            sorted_repo = StatisticsService().students_with_average_less_than_five(repo, grades_repo)
+            for student, average in sorted_repo:
+                print(f"ID: {student.id_student} | Nume: {student.name} | Nota: {average}")
+        except ValueError as e:
+         print(f"Eroare: \n{e}")
+
     def ui_menu(self):
         """
         Functie care afiseaza meniul aplicatiei
@@ -200,6 +258,9 @@ class UI:
               "11: Afiseaza toti studentii cu probleme asignate \n"
               "12: Asigneaza o problema de laborator unui student \n"
               "13: Noteza un student \n"
+              "14: Statistica: afiseaza studentii si notele lor in ordine alfabetica \n"
+              "15: Statistica: afiseaza studentii si notele lor in ordinea descrescatoare a notelor \n"
+              "16: Statistica: afiseaza studentii cu media sub 5 \n"
               "exit: Opreste programul \n"
               "-----------------------------------------------------")
 
@@ -230,12 +291,19 @@ class UI:
             "12" : lambda: self.ui_assign_problem(repo, lab_repo, grades_repo),
             "13" : lambda: self.ui_grade_assigned_problem(repo, lab_repo, grades_repo),
         }
+        statistics_commands = {
+            "14" : lambda: self.ui_sort_students_and_grades_by_name(repo, grades_repo),
+            "15": lambda: self.ui_sort_students_by_grade(repo, grades_repo),
+            "16": lambda: self.ui_sort_students_by_average(repo, grades_repo),
+        }
         if command in student_commands:
             student_commands[command]()
         elif command in problem_commands:
             problem_commands[command]()
         elif command in assignment_commands:
             assignment_commands[command]()
+        elif command in statistics_commands:
+            statistics_commands[command]()
         else:
             print("Comanda invalida")
 
