@@ -156,10 +156,18 @@ class GradesTests:
         Functie care testeaza repo_search_grade
         :return: None
         """
-        test_repo = StudentsRepository([Student(1, "paul", 216)])
-        test_grade_repo = GradeRepository([Grade(1, "lab1-p1", 7),])
-        grade = test_grade_repo.repo_search_grade(test_repo.students[0].id_student)
-        assert grade == test_grade_repo.grades[0]
+
+        def test_repo_search_grade(self):
+            grades_repo = GradeRepository([
+                Grade(1, "lab1-p1", 7),
+                Grade(1, "lab2-p1", 9),
+            ])
+
+            found_grade = grades_repo.repo_search_grade(1, "lab2-p1")
+            assert found_grade == grades_repo.grades[1]
+
+            missing_grade = grades_repo.repo_search_grade(1, "lab3-p1")
+            assert missing_grade is None
 
     def run_all_grade_tests(self):
         """

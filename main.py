@@ -3,7 +3,6 @@ from Repository.lab_problem_list import LabProblemRepository
 from Repository.students_list import StudentsRepository
 from Tests.grades_tests import GradesTests
 from Tests.lab_problem_tests import LabProblemTests
-from Tests.statistics_tests import StatisticsTests
 from Tests.student_tests import StudentsTests
 from Tests.statistics_tests import StatisticsTests
 from UI.ui import UI

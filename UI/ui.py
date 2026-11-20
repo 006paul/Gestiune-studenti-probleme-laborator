@@ -199,7 +199,7 @@ class UI:
                 return
             sorted_repo = StatisticsService().sort_students_and_grades_by_name(repo)
             for student in sorted_repo:
-                grade = grades_repo.repo_search_grade(student.id_student)
+                grade = grades_repo.repo_search_grade(student.id_student, problem)
                 if grade is not None and grade.lab_problem_num == problem:
                     grade_str = f"{grade.grade}" if grade.grade is not None else "Nenotat"
                     print(f"ID: {student.id_student} | Nume: {student.name} | Nota: {grade_str}")
